@@ -1,0 +1,90 @@
+:root {
+    --color-primary: #3498db;
+    --color-secondary: #333;
+    --color-tertiary: #c18cd4;
+    --color-accent: #2980b9;
+    --color-text-light: #b2b2d5;
+    --color-text-dark: #555;
+    --color-background: #D3D3E7;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    background-color: var(--color-background);
+    margin: 0;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    color: var(--color-secondary);
+    text-align: center;
+    font-family: Georgia, Times, Times New Roman, serif;
+    font-size: 3rem;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.rss-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 1rem 0;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+	width: 100%;
+}
+
+.rss-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 3rem;
+	margin-left: 1rem;
+	margin-top:55%;
+}
+
+.rss-website {
+    font-weight: bold;
+    margin: 0;
+}
+
+.rss-title {
+    margin: .5rem 0;
+    display: block;
+}
+
+.rss-title .link {
+    font-size: 1rem; 
+    color: var(--color-tertiary);
+    font-weight: 700;
+}
+
+.rss-title .link:hover {
+    color: var(--color-accent);
+}
+
+.date {
+    color: var(--color-text-light);
+	margin-top:1rem;
+	text-align:right;
+}
+
+.description {
+    margin-top: 10px;
+    font-size: 1rem; 
+    color: var(--color-text-dark);
+}
+
+
