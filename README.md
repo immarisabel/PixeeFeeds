@@ -53,6 +53,15 @@ If for any reason you cannot get it to work, drop me an email: web@marisabel.nl
 
 I can check for you the OPML file and config if needed be. I can't answer super fast but I do my best. I am on the Amsterdam timezone.
 
+## EXTRAS
+
+I added the `<link rel="blogroll" ...>` tag on the header. In order to support syndication of RSS feeds.
+
+### Sources
+- [OPML.ORG : About blogrolls](https://opml.org/blogroll.opml)
+- [alexsci.com : Blogroll Network Map](https://alexsci.com/rss-blogroll-network/)
+- [aramzs.xyz : The Internet is a Series of Webs](https://aramzs.xyz/essays/the-internet-is-a-series-of-webs/)
+
 ## LICENSE
 
 ### Open Source Notice
