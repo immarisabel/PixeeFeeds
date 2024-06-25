@@ -37,6 +37,21 @@ $readerSettings = [
 ];
 ```
 
+### upload to your PHP server
+
+- I have not tested with anything but PHP 8.0
+- keep all in the same folder, unless you know what you are doing
+
+### open your feed!
+
+The only file you should open is:
+`show_feeds.php`
+
+### QUESTIONS
+
+If for any reason you cannot get it to work, drop me an email: web@marisabel.nl
+
+I can check for you the OPML file and config if needed be. I can't answer super fast but I do my best. I am on the Amsterdam timezone.
 
 ## LICENSE
 
