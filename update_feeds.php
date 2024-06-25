@@ -2,13 +2,13 @@
 $config = include('config.php');
 
 if (isset($config['readerSettings'])) {
-    $readerSettings = $config['readerSettings'];
+   	$readerSettings = $config['readerSettings'];
 	$webUrl = $readerSettings['web_url'];
 	$entriesPerFeed = $readerSettings['how_many'];
 
 	$refreshTime = $readerSettings['how_often_to_run'];
-    $opmlPath = $readerSettings['opml_path'];
-    $defaultIcon = $readerSettings['default_icon'];
+  	$opmlPath = $readerSettings['opml_path'];
+   	$defaultIcon = $readerSettings['default_icon'];
 } else {
     die('Error: Configuration is missing or invalid.');
 }
@@ -38,10 +38,10 @@ function fetchFeedsFromOpml($opmlFilePath) {
 
 function fetchLatestEntries($feedUrls, $defaultIcon, $entriesPerFeed) {
     $entries = [];
-    
+    $agent =  'User-Agent: PixeeFeeds 1.0 via ' . $webUrl;
     $options = [
         'http' => [
-            'header' => "User-Agent: PixeeFeeds 1.0",
+            'header' => $agent,
             'ignore_errors' => true
         ],
         'ssl' => [
