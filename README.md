@@ -1,6 +1,65 @@
 # PixeeFeeds
 Enchanting PHP RSS feed reader designed to effortlessly discover, share, and manage blogrolls and content feeds online. 
 
+This was a labor of love. I wanted to overengineer it, but then I figure this is all I need at the moment. It is nto fancy code, it is useful simple code. As simple as I could keep it.
+You only have to touch 2 files. The rest feel free to do so if you want to play with the code. I highly encourage you to edit the CSS to your will, specially the color scheme on root. 
+
+Have fun! Spread the web!
+
+```css
+:root {
+    --color-primary: #3498db;
+    --color-secondary: #333;
+    --color-tertiary: #c18cd4;
+    --color-accent: #2980b9;
+    --color-text-light: #b2b2d5;
+    --color-text-dark: #555;
+    --color-background: #D3D3E7;
+}
+```
+
+This won't translate to the OPML template but you can the just copy the colors you want to the file `stylesheet.xsl`.
+
+```css
+   body {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            max-width: 800px;
+            margin: 3rem auto;
+            background-color: #D3D3E7; 
+            color: #333;
+            text-align: center;
+          }
+          h1 {
+            color: #555; 
+            margin-bottom: 2rem;
+          }
+          p {
+            margin-bottom: 2rem;
+            color: #2980b9; 
+          }
+          ul {
+            list-style-type: none;
+            padding-left: 0;
+          }
+          li {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background-color: #ffffff; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+          a {
+            color: #555;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          .feed {
+            font-size: 0.9rem;
+            color: #FF1493; 
+          }
+```
 
 ## USAGE
 
