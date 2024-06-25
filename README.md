@@ -6,6 +6,9 @@ You only have to touch 2 files. The rest feel free to do so if you want to play 
 
 > Have fun! Spread the web!
 
+[!screenshoot of the feed](https://github.com/immarisabel/PixeeFeeds/blob/main/screenshoots/screenshoot-pixeefeeds.PNG)
+
+[!screenshoot of the OPML file](https://github.com/immarisabel/PixeeFeeds/blob/main/screenshoots/screenshoot-pixeefeeds-opml.PNG)
 
 ## USAGE
 
