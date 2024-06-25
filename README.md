@@ -118,6 +118,12 @@ This won't translate to the OPML template but you can the just copy the colors y
           }
 ```
 
+### Icon
+
+The `no-icon.svg` is just cod. If you fancy another one, feel free to change it. Just search `heart svg` and you get plenty.
+
+### Discovery
+
 I added the `<link rel="blogroll" ...>` tag on the header. In order to support syndication of RSS feeds.
 
 ### Sources
