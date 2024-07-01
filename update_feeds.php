@@ -2,24 +2,25 @@
 $config = include('config.php');
 
 if (isset($config['readerSettings'])) {
-   	$readerSettings = $config['readerSettings'];
-	$webUrl = $readerSettings['web_url'];
-	$entriesPerFeed = $readerSettings['how_many'];
-
-	$refreshTime = $readerSettings['how_often_to_run'];
-  	$opmlPath = $readerSettings['opml_path'];
-   	$defaultIcon = $readerSettings['default_icon'];
+    $readerSettings = $config['readerSettings'];
+    $webUrl = $readerSettings['web_url'];
+    $entriesPerFeed = $readerSettings['how_many'];
+    $refreshTime = $readerSettings['how_often_to_run'];
+    $opmlPath = $readerSettings['opml_path'];
+    $defaultIcon = $readerSettings['default_icon'];
 } else {
     die('Error: Configuration is missing or invalid.');
 }
 
 $absoluteOpmlPath = $_SERVER['DOCUMENT_ROOT'] . $opmlPath;
 
-function fetchFeedsFromOpml($opmlFilePath) {
+function fetchFeedsFromOpml($absoluteOpmlPath) {
+    echo $absoluteOpmlPath;
+
     $feeds = [];
 
-    if (file_exists($opmlFilePath)) {
-        $opml = simplexml_load_file($opmlFilePath);
+    if (file_exists($absoluteOpmlPath)) {
+        $opml = simplexml_load_file($absoluteOpmlPath);
         foreach ($opml->body->outline as $outline) {
             if (isset($outline->outline)) {
                 foreach ($outline->outline as $feed) {
@@ -36,7 +37,7 @@ function fetchFeedsFromOpml($opmlFilePath) {
     return $feeds;
 }
 
-function fetchLatestEntries($feedUrls, $defaultIcon, $entriesPerFeed) {
+function fetchLatestEntries($feedUrls, $defaultIcon, $entriesPerFeed, $webUrl) {
     $entries = [];
     $agent =  'User-Agent: PixeeFeeds 1.0 via ' . $webUrl;
     $options = [
@@ -52,22 +53,28 @@ function fetchLatestEntries($feedUrls, $defaultIcon, $entriesPerFeed) {
     $context = stream_context_create($options);
 
     foreach ($feedUrls as $feedUrl) {
-        $rssContent = @file_get_contents($feedUrl, false, $context);
+        $feedContent = @file_get_contents($feedUrl, false, $context);
 
-        if ($rssContent !== false) {
-            $rss = simplexml_load_string($rssContent);
+        if ($feedContent !== false) {
+            $xml = simplexml_load_string($feedContent);
 
-            if ($rss && isset($rss->channel->item)) {
-                $websiteTitle = (string) $rss->channel->title;
-                $websiteUrl = (string) $rss->channel->link;
-                $icon = (string) $rss->channel->image->url;
+            if ($xml === false) {
+                error_log("Failed to parse feed: $feedUrl");
+                continue;
+            }
+
+            if (isset($xml->channel->item)) {
+                // RSS feed
+                $websiteTitle = (string) $xml->channel->title;
+                $websiteUrl = (string) $xml->channel->link;
+                $icon = (string) $xml->channel->image->url;
 
                 if (empty($icon)) {
                     $icon = $defaultIcon;
                 }
 
                 $feedEntries = [];
-                foreach ($rss->channel->item as $item) {
+                foreach ($xml->channel->item as $item) {
                     $feedEntries[] = [
                         'title' => (string) $item->title,
                         'link' => (string) $item->link,
@@ -83,8 +90,31 @@ function fetchLatestEntries($feedUrls, $defaultIcon, $entriesPerFeed) {
                     return $b['pubDate'] - $a['pubDate'];
                 });
                 $entries = array_merge($entries, array_slice($feedEntries, 0, $entriesPerFeed));
+            } elseif (isset($xml->entry)) {
+                // Atom feed
+                $websiteTitle = (string) $xml->title;
+                $websiteUrl = (string) $xml->link['href'];
+                $icon = $defaultIcon;  // Atom feeds do not have an image element in the same way RSS feeds do
+
+                $feedEntries = [];
+                foreach ($xml->entry as $entry) {
+                    $feedEntries[] = [
+                        'title' => (string) $entry->title,
+                        'link' => (string) $entry->link['href'],
+                        'description' => strip_tags((string) $entry->content),
+                        'pubDate' => strtotime((string) $entry->updated),
+                        'author' => isset($entry->author->name) ? (string) $entry->author->name : 'Unknown',
+                        'websiteTitle' => $websiteTitle,
+                        'websiteUrl' => $websiteUrl,
+                        'icon' => $icon
+                    ];
+                }
+                usort($feedEntries, function($a, $b) {
+                    return $b['pubDate'] - $a['pubDate'];
+                });
+                $entries = array_merge($entries, array_slice($feedEntries, 0, $entriesPerFeed));
             } else {
-                error_log("Failed to parse feed: $feedUrl");
+                error_log("Feed format not recognized: $feedUrl");
             }
         } else {
             error_log("Failed to load feed: $feedUrl");
@@ -98,10 +128,9 @@ function fetchLatestEntries($feedUrls, $defaultIcon, $entriesPerFeed) {
     return $entries;
 }
 
-
 $feeds = fetchFeedsFromOpml($absoluteOpmlPath);
 
-$latestEntries = fetchLatestEntries($feeds, $defaultIcon, $entriesPerFeed);
+$latestEntries = fetchLatestEntries($feeds, $defaultIcon, $entriesPerFeed, $webUrl);
 
 $feedDataFile = 'feed_data.json'; 
 
